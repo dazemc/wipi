@@ -13,7 +13,7 @@ def show_saved_wifi() -> dict:
         output = {}
         show_wifi = str(subprocess.check_output(["ls", "/etc/NetworkManager/system-connections/"]))
         for i in show_wifi.split(','):
-            saved_wifi.append(re.findall(r"'(.*?)'", i).replace("\\n"), '')  # single line parse
+            saved_wifi.append(re.findall(r"'(.*?)'", i)[0].replace("\\n", ''))  # single line parse
         output["result"] = saved_wifi
         return output
 
