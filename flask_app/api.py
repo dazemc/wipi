@@ -11,12 +11,15 @@ valid_queries = ["show_connections", "show_credentials"]
 
 @app.route("/api", methods=["GET"])
 def handle_queries() -> str | None:
-    query = request.query_string.decode("utf-8")[:request.query_string.decode("utf-8").find("=")]
+    query = request.query_string.decode("utf-8")[
+        : request.query_string.decode("utf-8").find("=")
+    ]
     if request.method == "GET" and query in valid_queries:
         if query == "show_connections":
             return show_connections()
         if query == "show_credentials":
-            return get_credentials(request.args["show_credentials"])
+            # return get_credentials(request.args["show_credentials"])
+            return show_credentials(request.args["show_credentials"])
     return f"QUERY: {query}\nNot a valid query."
 
 
@@ -34,7 +37,8 @@ def get_connections() -> list:
     return saved_wifi
 
 
-def get_credentials(ssid) -> str:
+def get_credentials(ssid) -> dict:
+    # TODO: parse connection info as dict
     if ssid in saved_connections:
         return str(
             subprocess.check_output(
@@ -42,6 +46,15 @@ def get_credentials(ssid) -> str:
             )
         )
     return f"SSID: {ssid}\nNot in saved connections."
+
+
+def get_all_credentials() -> list:
+    # TODO: return list of get_credentials using saved_connections list
+    pass
+
+
+def show_credentials(ssid) -> dict:
+    return {request.args["show_credentials"]: get_credentials(ssid)}
 
 
 saved_connections = get_connections()
