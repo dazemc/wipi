@@ -8,9 +8,12 @@ CORS(app)
 @app.route("/api", methods=["GET"])
 def show_saved_wifi() -> dict:
     if request.method == "GET":
-        # wifi = {}
+        saved_wifi = {}
         result = subprocess.check_output(["ls", "/etc/NetworkManager/system-connections/"])
-        print(result)
+        saved_wifi["result"] = {
+            "saved_connections": result,
+        }
+        return saved_wifi
 
 
 if __name__ == "__main__":
