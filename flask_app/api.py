@@ -11,9 +11,10 @@ valid_queries = ["show_connections", "show_credentials"]
 
 @app.route("/api", methods=["GET"])
 def handle_queries() -> str | None:
-    query = request.query_string.decode("utf-8")[
-        : request.query_string.decode("utf-8").find("=")
-    ]
+    query = request.query_string.decode("utf-8")
+    find_query = query("=")
+    if find_query > 0:
+        query = query[:find_query]
     if request.method == "GET" and query in valid_queries:
         if query == "show_connections":
             return show_connections()
