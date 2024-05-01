@@ -7,6 +7,24 @@ app = Flask(__name__)
 CORS(app)
 
 valid_queries = ["show_connections", "show_credentials"]
+connection_values = [
+    "id=",
+    "uuid=",
+    "type=",
+    "autoconnect=",
+    "interface-name=",
+    "timestamp=",
+    "mode=",
+    "ssid=",
+    "group=",
+    "key-mgmt=",
+    "pairwise=",
+    "proto=",
+    "psk=",
+    "method=",
+    "addr-gen-mode=",
+    "method=",
+]
 
 
 @app.route("/api", methods=["GET"])
@@ -39,13 +57,16 @@ def get_connections() -> list:
 
 
 def get_credentials(ssid) -> dict:
-    # TODO: parse connection info as dict
     if ssid in saved_connections:
-        return str(
+        credentials = str(
             subprocess.check_output(
                 ["cat", f"/etc/NetworkManager/system-connections/{ssid}"]
             )
         )
+        creds_parsed = {}
+        for v in connection_values:
+            creds_parsed[v[:-1]] = parse_credentials(credentials, v)[1]
+        return creds_parsed
     return f"SSID: {ssid}\nNot in saved connections."
 
 
@@ -56,6 +77,15 @@ def get_all_credentials() -> list:
 
 def show_credentials(ssid) -> dict:
     return {request.args["show_credentials"]: get_credentials(ssid)}
+
+
+def parse_credentials(credentials, ingest):
+    start = credentials.find(ingest)
+    section = credentials[start:]
+    end = section.find("\\")
+    value = section[:end]
+    split = value.split("=")
+    return split
 
 
 saved_connections = get_connections()
