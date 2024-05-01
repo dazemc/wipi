@@ -8,7 +8,7 @@ const String showCredentials = 'http://192.168.0.174/api?show_credentials=';
 class WiPiController extends GetxController {
   final getx = GetConnect();
   final savedConnections = <dynamic>[''].obs;
-  final creds = <String, dynamic>{"": ""}.obs;
+  final creds = <String, dynamic>{"default": "value"}.obs;
   void fetchSavedConnections() async {
     final response = await getx.get(showConnections);
     if (kDebugMode) {
@@ -16,8 +16,7 @@ class WiPiController extends GetxController {
     }
   }
 
-  void fetchCredentials() async {
-    String connection = savedConnections[0];
+  void fetchCredentials(String connection) async {
     final response = await getx.get("$showCredentials$connection");
     if (kDebugMode) {
       creds.value = response.body;

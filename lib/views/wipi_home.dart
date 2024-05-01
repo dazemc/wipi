@@ -16,7 +16,7 @@ class WiPiHome extends StatelessWidget {
           ),
           Obx(() => Text(wipiController.savedConnections[0])),
           ElevatedButton(
-            onPressed: () => wipiController.fetchCredentials(),
+            onPressed: () => wipiController.fetchCredentials(wipiController.savedConnections[0]),
             child: const Text('Creds'),
           ),
           Obx(() => Text(wipiController.creds.toString()))
