@@ -87,6 +87,38 @@ def parse_credentials(credentials, ingest):
     return split
 
 
+def enable_hotspot(ssid, password) -> None:
+    subprocess.run(
+        [
+            "nmcli",
+            "device",
+            "wifi",
+            "hotspot",
+            "ssid",
+            ssid,
+            "password",
+            password,
+            "ifname",
+            "wlan0",
+        ],
+        check=False,
+    )
+
+
+def setup_hotspot() -> None:
+    subprocess.run(["sh", "ap_setup.sh"], check=False)
+
+def disable_hotspot() -> None:
+    subprocess.run(["nmcli", "r", "wifi", "off"], check=False)
+    subprocess.run(["nmcli", "r", "wifi", "on"], check=False)
+
+
+def connect_wifi(ssid, password) -> None:
+    subprocess.run(
+        ["nmcli", "device", "wifi", "connect", ssid, "password", password], check=False
+    )
+
+
 saved_connections = get_connections()
 
 if __name__ == "__main__":
