@@ -1,5 +1,4 @@
 import subprocess
-import re
 from flask import Flask, request
 from flask_cors import CORS
 
@@ -83,7 +82,7 @@ def parse_credentials(credentials, ingest):
     end = section.find("\\")
     value = section[:end]
     split = value.split("=")
-    if start < 0:
+    if start == -1:
         return [ingest[:-1], ""]
     return split
 
