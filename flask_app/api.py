@@ -47,16 +47,14 @@ def show_connections() -> dict:
 
 
 def get_connections() -> list:
-    saved_wifi = []
-    show_wifi = str(
-        subprocess.check_output(["ls", "/etc/NetworkManager/system-connections/"])
+    show_wifi = subprocess.check_output(
+        ["ls", "/etc/NetworkManager/system-connections/"]
     )
-    for i in show_wifi.split(","):
-        saved_wifi.append(re.findall(r"'(.*?)'", i)[0].replace("\\n", ""))
-    return saved_wifi
+    return show_wifi.decode("utf-8").splitlines()
 
 
 def get_credentials(ssid) -> dict:
+    saved_connections = get_connections()
     if ssid in saved_connections:
         credentials = str(
             subprocess.check_output(
@@ -85,6 +83,8 @@ def parse_credentials(credentials, ingest):
     end = section.find("\\")
     value = section[:end]
     split = value.split("=")
+    if start < 0:
+        return [ingest[:-1], ""]
     return split
 
 
