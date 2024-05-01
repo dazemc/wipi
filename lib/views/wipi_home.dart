@@ -7,6 +7,21 @@ class WiPiHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final wipiController = Get.put(WiPiController());
-    return const Placeholder();
+    return Center(
+      child: Column(
+        children: [
+          ElevatedButton(
+            onPressed: () => wipiController.fetchSavedConnections(),
+            child: const Text('Call'),
+          ),
+          Obx(() => Text(wipiController.savedConnections[0])),
+          ElevatedButton(
+            onPressed: () => wipiController.fetchCredentials(),
+            child: const Text('Creds'),
+          ),
+          Obx(() => Text(wipiController.creds.toString()))
+        ],
+      ),
+    );
   }
 }
