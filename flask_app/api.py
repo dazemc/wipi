@@ -7,7 +7,7 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-valid_queries = ["show_connections", "show_credentials"]
+valid_queries = ["show_connections", "show_credentials", "delete_credentials"]
 connection_values = [
     "id=",
     "uuid=",
@@ -40,6 +40,8 @@ def handle_queries() -> str | None:
                 return show_connections()
             if query == "show_credentials":
                 return show_credentials(request.args["show_credentials"])
+            if query == "delete_credentials":
+                return delete_credentials(request.args["ssid"])
         return f"QUERY: {query}\nNot a valid query."
 
 
@@ -88,6 +90,18 @@ def get_all_credentials() -> list:
 def show_credentials(ssid) -> dict:
     return {request.args["show_credentials"]: get_credentials(ssid)}
 
+
+def delete_credentials(ssid):
+    subprocess.run(
+        [
+            "nmcli",
+            "connection",
+            "delete",
+            ssid,
+        ],
+        check=False
+    )
+    return f"Deleted {ssid}"
 
 def parse_credentials(credentials, ingest):
     start = credentials.find(ingest)
