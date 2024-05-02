@@ -16,10 +16,15 @@ class WiPiHome extends StatelessWidget {
           ),
           Obx(() => Text(wipiController.savedConnections[0])),
           ElevatedButton(
-            onPressed: () => wipiController.fetchCredentials(wipiController.savedConnections[0]),
+            onPressed: () => wipiController
+                .fetchCredentials(wipiController.savedConnections[0]),
             child: const Text('Creds'),
           ),
-          Obx(() => Text(wipiController.creds.toString()))
+          Obx(() => Text(wipiController.creds.toString())),
+          ElevatedButton(
+              onPressed: () => wipiController.postCredentials(
+                  {"SSID": "Whatever", "PASS": "testing247"}),
+              child: const Text("POST TEST"))
         ],
       ),
     );

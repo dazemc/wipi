@@ -2,8 +2,10 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 // import 'package:wipi/models/saved_connections.dart';
 
-const String showConnections = 'http://192.168.0.174/api?show_connections';
-const String showCredentials = 'http://192.168.0.174/api?show_credentials=';
+const String baseUrl = 'http://192.168.0.174/';
+const String showConnections = '${baseUrl}rec_creds?show_connections';
+const String showCredentials = '${baseUrl}rec_creds?show_credentials=';
+const String sendCredentials = '${baseUrl}send_creds';
 
 class WiPiController extends GetxController {
   final getx = GetConnect();
@@ -21,6 +23,13 @@ class WiPiController extends GetxController {
     if (kDebugMode) {
       creds.value = response.body;
       print(creds);
+    }
+  }
+
+  void postCredentials(data) async {
+    final response = await getx.post(sendCredentials, data);
+    if (kDebugMode) {
+      print(response.body);
     }
   }
 }

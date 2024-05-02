@@ -1,4 +1,6 @@
 import subprocess
+import json
+import time
 from flask import Flask, request
 from flask_cors import CORS
 
@@ -26,19 +28,30 @@ connection_values = [
 ]
 
 
-@app.route("/api", methods=["GET"])
+@app.route("/rec_creds", methods=["GET"])
 def handle_queries() -> str | None:
-    query = request.query_string.decode("utf-8")
-    find_query = query.find("=")
-    if find_query > 0:
-        query = query[:find_query]
-    if request.method == "GET" and query in valid_queries:
-        if query == "show_connections":
-            return show_connections()
-        if query == "show_credentials":
-            # return get_credentials(request.args["show_credentials"])
-            return show_credentials(request.args["show_credentials"])
-    return f"QUERY: {query}\nNot a valid query."
+    if request.method == "GET":
+        query = request.query_string.decode("utf-8")
+        find_query = query.find("=")
+        if find_query != -1:
+            query = query[:find_query]
+        if query in valid_queries:
+            if query == "show_connections":
+                return show_connections()
+            if query == "show_credentials":
+                return show_credentials(request.args["show_credentials"])
+        return f"QUERY: {query}\nNot a valid query."
+
+
+@app.route("/send_creds", methods=["POST"])
+def save_credentials() -> str | None:
+    if request.method == "POST":
+        r = json.loads(request.data)
+        disable_hotspot()
+        time.sleep(3)
+        if connect_wifi(r["SSID"], r["PASS"]):
+            return "Connected"
+        return "Error connecting"
 
 
 def show_connections() -> dict:
@@ -108,15 +121,19 @@ def enable_hotspot(ssid, password) -> None:
 def setup_hotspot() -> None:
     subprocess.run(["sh", "ap_setup.sh"], check=False)
 
+
 def disable_hotspot() -> None:
     subprocess.run(["nmcli", "r", "wifi", "off"], check=False)
     subprocess.run(["nmcli", "r", "wifi", "on"], check=False)
 
 
-def connect_wifi(ssid, password) -> None:
-    subprocess.run(
-        ["nmcli", "device", "wifi", "connect", ssid, "password", password], check=False
+def connect_wifi(ssid, password) -> bool:
+    check_wifi = subprocess.check_output(
+        ["nmcli", "device", "wifi", "connect", ssid, "password", password]
     )
+    if "successfully" in check_wifi.decode("utf-8"):
+        return True
+    return False
 
 
 saved_connections = get_connections()
