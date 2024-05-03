@@ -67,90 +67,8 @@ class WiPiHome extends StatelessWidget {
                 ),
               ],
             ),
-            Container(
-              margin: const EdgeInsets.all(7),
-              padding: const EdgeInsets.all(5),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blueGrey[700],
-                    ),
-                    onPressed: () {
-                      Get.defaultDialog(
-                        contentPadding: const EdgeInsets.all(20),
-                        backgroundColor: Colors.grey[900],
-                        title: "",
-                        content: Column(
-                          children: [
-                            TextField(
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
-                                hintText: 'SSID',
-                                hintStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
-                              controller: wipiController.ssidTextController,
-                            ),
-                            TextField(
-                              style: const TextStyle(color: Colors.white),
-                              decoration: const InputDecoration(
-                                hintText: 'password',
-                                hintStyle: TextStyle(
-                                  color: Colors.white,
-                                  fontStyle: FontStyle.italic,
-                                ),
-                              ),
-                              controller: wipiController.passTextController,
-                            ),
-                            const SizedBox(height: 20,),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blueGrey[700],
-                              ),
-                              onPressed: () {
-                                wipiController.ssid =
-                                    wipiController.ssidTextController.text;
-                                wipiController.pass =
-                                    wipiController.passTextController.text;
-                                wipiController.postCredentials();
-                                Get.back(closeOverlays: true);
-                              },
-                              child: const Text(
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                                "Send"),
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                    child: const Row(
-                      children: [
-                        Icon(
-                          Icons.add,
-                          color: Colors.white,
-                          size: 17,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Obx(
-                    () => ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: wipiController.deleteColor.value,
-                      ),
-                      onPressed: () => wipiController
-                          .removeCredentials(wipiController.wifiInfo.value),
-                      child: const Icon(Icons.delete, color: Colors.white),
-                    ),
-                  ),
-                ],
-              ),
+            const SizedBox(
+              height: 80,
             ),
             Obx(
               () => Padding(
@@ -205,7 +123,94 @@ class WiPiHome extends StatelessWidget {
                   ],
                 ),
               ),
-            )
+            ),
+            Container(
+              margin: const EdgeInsets.all(7),
+              padding: const EdgeInsets.all(5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueGrey[700],
+                    ),
+                    onPressed: () {
+                      Get.defaultDialog(
+                        contentPadding: const EdgeInsets.all(20),
+                        backgroundColor: Colors.grey[900],
+                        title: "",
+                        content: Column(
+                          children: [
+                            TextField(
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                hintText: 'SSID',
+                                hintStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                              controller: wipiController.ssidTextController,
+                            ),
+                            TextField(
+                              style: const TextStyle(color: Colors.white),
+                              decoration: const InputDecoration(
+                                hintText: 'password',
+                                hintStyle: TextStyle(
+                                  color: Colors.white,
+                                  fontStyle: FontStyle.italic,
+                                ),
+                              ),
+                              controller: wipiController.passTextController,
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blueGrey[700],
+                              ),
+                              onPressed: () {
+                                wipiController.ssid =
+                                    wipiController.ssidTextController.text;
+                                wipiController.pass =
+                                    wipiController.passTextController.text;
+                                wipiController.postCredentials();
+                                Get.back(closeOverlays: true);
+                              },
+                              child: const Text(
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                  "Send"),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    child: const Icon(
+                      Icons.add,
+                      color: Colors.white,
+                      size: 26,
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 100,
+                    height: 160,
+                  ),
+                  Obx(
+                    () => ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: wipiController.deleteColor.value,
+                      ),
+                      onPressed: () => wipiController
+                          .removeCredentials(wipiController.wifiInfo.value),
+                      child: const Icon(Icons.delete, color: Colors.white),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
