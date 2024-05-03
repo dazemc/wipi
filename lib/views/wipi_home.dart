@@ -13,10 +13,8 @@ class WiPiHome extends StatelessWidget {
           color: Colors.grey[900],
           borderRadius: BorderRadius.circular(10),
         ),
-        margin: const EdgeInsets.all(10),
-        padding: const EdgeInsets.all(10),
-        // width: 333,
-        // height: 333,
+        margin: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
