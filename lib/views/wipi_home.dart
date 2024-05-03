@@ -79,12 +79,9 @@ class WiPiHome extends StatelessWidget {
                     ),
                     onPressed: () {
                       Get.defaultDialog(
-                        titlePadding: const EdgeInsets.all(33),
+                        contentPadding: const EdgeInsets.all(20),
                         backgroundColor: Colors.grey[900],
-                        titleStyle: const TextStyle(
-                          color: Colors.white,
-                        ),
-                        title: "Enter SSID and password",
+                        title: "",
                         content: Column(
                           children: [
                             TextField(
@@ -93,6 +90,7 @@ class WiPiHome extends StatelessWidget {
                                 hintText: 'SSID',
                                 hintStyle: TextStyle(
                                   color: Colors.white,
+                                  fontStyle: FontStyle.italic,
                                 ),
                               ),
                               controller: wipiController.ssidTextController,
@@ -103,20 +101,30 @@ class WiPiHome extends StatelessWidget {
                                 hintText: 'password',
                                 hintStyle: TextStyle(
                                   color: Colors.white,
+                                  fontStyle: FontStyle.italic,
                                 ),
                               ),
                               controller: wipiController.passTextController,
                             ),
+                            const SizedBox(height: 20,),
                             ElevatedButton(
-                                onPressed: () {
-                                  wipiController.ssid =
-                                      wipiController.ssidTextController.text;
-                                  wipiController.pass =
-                                      wipiController.passTextController.text;
-                                  wipiController.postCredentials();
-                                  Get.back(closeOverlays: true);
-                                },
-                                child: const Text("Send"))
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blueGrey[700],
+                              ),
+                              onPressed: () {
+                                wipiController.ssid =
+                                    wipiController.ssidTextController.text;
+                                wipiController.pass =
+                                    wipiController.passTextController.text;
+                                wipiController.postCredentials();
+                                Get.back(closeOverlays: true);
+                              },
+                              child: const Text(
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                                "Send"),
+                            ),
                           ],
                         ),
                       );
