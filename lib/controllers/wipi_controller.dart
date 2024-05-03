@@ -81,7 +81,9 @@ class WiPiController extends GetxController {
     clearConnectionList();
     fetchSavedConnections();
     if (kDebugMode) {
-      // print(response.body);
+      if (response.body == "Deleted: $connection") {
+        print("Successfully deleted");
+      }
     }
   }
 
