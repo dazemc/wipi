@@ -44,7 +44,8 @@ class WiPiHome extends StatelessWidget {
                               ),
                               selectedType,
                             ),
-                            onTap: () => wipiController.fetchCredentials(selectedType));
+                            onTap: () =>
+                                wipiController.fetchCredentials(selectedType));
                       }).toList(),
                     ),
                   ),
@@ -144,12 +145,57 @@ class WiPiHome extends StatelessWidget {
               ),
             ),
             Obx(
-              () => Text(
-                  style: const TextStyle(
-                    color: Colors.white,
+              () => Column(
+                children: [
+                  Card(
+                    color: Colors.black,
+                    child: Container(
+                      margin: const EdgeInsets.all(0),
+                      child: ListTile(
+                        shape: const RoundedRectangleBorder(),
+                        tileColor: Colors.grey[800],
+                        title: Text(
+                            style: const TextStyle(color: Colors.white),
+                            wipiController.displaySsid.value),
+                        leading: const Text(
+                            style: TextStyle(color: Colors.white), "ssid: "),
+                      ),
+                    ),
                   ),
-                  wipiController.creds.toString()),
-            ),
+                  Card(
+                    color: Colors.black,
+                    child: Container(
+                      margin: const EdgeInsets.all(0),
+                      child: ListTile(
+                        shape: const RoundedRectangleBorder(),
+                        tileColor: Colors.grey[800],
+                        title: Text(
+                            style: const TextStyle(color: Colors.white),
+                            wipiController.displayPass.value),
+                        leading: const Text(
+                            style: TextStyle(color: Colors.white), "psk: "),
+                      ),
+                    ),
+                  ),
+                  Card(
+                    color: Colors.black,
+                    child: Container(
+                      margin: const EdgeInsets.all(0),
+                      child: ListTile(
+                        shape: const RoundedRectangleBorder(),
+                        tileColor: Colors.grey[800],
+                        title: Text(
+                            style: const TextStyle(color: Colors.white),
+                            wipiController.displayKeymgmt.value),
+                        leading: const Text(
+                            style: TextStyle(color: Colors.white),
+                            "key-mgmt: "),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
       ),

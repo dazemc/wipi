@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:wipi/models/saved_connections.dart';
 
 const String baseUrl = 'http://192.168.0.174/';
 const String showConnections = '${baseUrl}rec_creds?show_connections';
@@ -13,11 +14,15 @@ class WiPiController extends GetxController {
   final passTextController = TextEditingController();
   final getx = GetConnect();
   final savedConnections = <String>[''].obs;
-  final creds = <String, dynamic>{"default": "value"}.obs;
+  Map<String, Connection> displayConnections = <String, Connection>{};
+  Map creds = <String, dynamic>{"": ""};
   final wifiInfo = ''.obs;
   final deleteColor = Colors.red[400].obs;
   String ssid = "";
   String pass = "";
+  final displaySsid = "".obs;
+  final displayPass = "".obs;
+  final displayKeymgmt = "".obs;
   bool connected = false;
 
   void fetchSavedConnections() async {
@@ -37,7 +42,16 @@ class WiPiController extends GetxController {
     getDeleteColor();
     final response = await getx.get("$showCredentials${wifiInfo.value}");
     if (kDebugMode) {
-      creds.value = response.body;
+      creds = response.body;
+      for (String key in creds.keys) {
+        displayConnections = {
+          key: Connection(
+              ssid: key,
+              keymgmt: creds[key]["key-mgmt"],
+              psk: creds[key]["psk"])
+        };
+      }
+      displayCredentials();
     }
   }
 
@@ -51,6 +65,12 @@ class WiPiController extends GetxController {
         fetchSavedConnections();
       }
     }
+  }
+
+  void displayCredentials() {
+    displaySsid.value = displayConnections[wifiInfo.value]!.ssid;
+    displayKeymgmt.value = displayConnections[wifiInfo.value]!.keymgmt;
+    displayPass.value = displayConnections[wifiInfo.value]!.psk;
   }
 
   void removeCredentials(connection) async {

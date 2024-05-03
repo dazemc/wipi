@@ -1,9 +1,11 @@
 class Connection {
-  final List savedConnections;
+  final String ssid;
+  final String keymgmt;
+  final String psk;
 
-  const Connection({required this.savedConnections});
-
-  factory Connection.fromJson(Map<String, dynamic> json) {
-    return Connection(savedConnections: json['saved_connnections']);
-  }
+  const Connection({
+    required this.ssid,
+    required this.keymgmt,
+    required this.psk,
+  });
 }
