@@ -41,7 +41,7 @@ def handle_queries() -> str | None:
             if query == "show_credentials":
                 return show_credentials(request.args["show_credentials"])
             if query == "delete_credentials":
-                return delete_credentials(request.args["ssid"])
+                return delete_credentials(request.args["delete_credentials"])
         return f"QUERY: {query}\nNot a valid query."
 
 
@@ -49,7 +49,7 @@ def handle_queries() -> str | None:
 def save_credentials() -> str | None:
     if request.method == "POST":
         r = json.loads(request.data)
-        disable_hotspot()
+        cycle_wifi()
         time.sleep(3)
         if connect_wifi(r["SSID"], r["PASS"]):
             return "Connected"
@@ -57,14 +57,16 @@ def save_credentials() -> str | None:
 
 
 def show_connections() -> dict:
-    return {"saved_connections": saved_connections}
+    return {"saved_connections": get_connections()}
 
 
 def get_connections() -> list:
     show_wifi = subprocess.check_output(
         ["ls", "/etc/NetworkManager/system-connections/"]
     )
-    return show_wifi.decode("utf-8").splitlines()
+    conns = show_wifi.decode("utf-8").splitlines()
+    print(conns)
+    return [v.replace(".nmconnection", "") for v in conns]
 
 
 def get_credentials(ssid) -> dict:
@@ -72,7 +74,7 @@ def get_credentials(ssid) -> dict:
     if ssid in saved_connections:
         credentials = str(
             subprocess.check_output(
-                ["cat", f"/etc/NetworkManager/system-connections/{ssid}"]
+                ["cat", f"/etc/NetworkManager/system-connections/{ssid}.nmconnection"]
             )
         )
         creds_parsed = {}
@@ -99,9 +101,11 @@ def delete_credentials(ssid):
             "delete",
             ssid,
         ],
-        check=False
+        check=False,
     )
+    cycle_wifi()
     return f"Deleted {ssid}"
+
 
 def parse_credentials(credentials, ingest):
     start = credentials.find(ingest)
@@ -136,7 +140,7 @@ def setup_hotspot() -> None:
     subprocess.run(["sh", "ap_setup.sh"], check=False)
 
 
-def disable_hotspot() -> None:
+def cycle_wifi() -> None:
     subprocess.run(["nmcli", "r", "wifi", "off"], check=False)
     subprocess.run(["nmcli", "r", "wifi", "on"], check=False)
 
@@ -149,8 +153,6 @@ def connect_wifi(ssid, password) -> bool:
         return True
     return False
 
-
-saved_connections = get_connections()
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=80)

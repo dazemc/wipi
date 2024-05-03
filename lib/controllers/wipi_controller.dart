@@ -1,11 +1,11 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-// import 'package:wipi/models/saved_connections.dart';
+import 'package:flutter/material.dart';
 
 const String baseUrl = 'http://192.168.0.174/';
 const String showConnections = '${baseUrl}rec_creds?show_connections';
 const String showCredentials = '${baseUrl}rec_creds?show_credentials=';
+const String deleteCredentials = '${baseUrl}rec_creds?delete_credentials=';
 const String sendCredentials = '${baseUrl}send_creds';
 
 class WiPiController extends GetxController {
@@ -15,16 +15,20 @@ class WiPiController extends GetxController {
   final savedConnections = <String>[''].obs;
   final creds = <String, dynamic>{"default": "value"}.obs;
   final wifiInfo = ''.obs;
+  final deleteColor = Colors.red[400].obs;
   String ssid = "";
   String pass = "";
   bool connected = false;
 
   void fetchSavedConnections() async {
+    clearConnectionList();
     final response = await getx.get(showConnections);
     if (kDebugMode) {
       savedConnections.value =
           response.body['saved_connections'].cast<String>();
       wifiInfo.value = savedConnections[0];
+      fetchCredentials(wifiInfo.value);
+      getDeleteColor();
     }
   }
 
@@ -44,6 +48,33 @@ class WiPiController extends GetxController {
       if (response.body == "Connected") {
         connected = true;
       }
+    }
+  }
+
+  void removeCredentials(connection) async {
+    if (connection == "Hotspot") {
+      return;
+    }
+    final response = await getx.get("$deleteCredentials$connection");
+    clearConnectionList();
+    fetchSavedConnections();
+    if (kDebugMode) {
+      print(response.body);
+    }
+  }
+
+  void clearConnectionList() {
+    wifiInfo.value = "";
+    wifiInfo.refresh();
+    savedConnections.value = [];
+    savedConnections.refresh();
+  }
+
+  void getDeleteColor() {
+    if (wifiInfo.value == "Hotspot") {
+      deleteColor.value = Colors.grey[900];
+    } else {
+      deleteColor.value = Colors.red[400];
     }
   }
 }

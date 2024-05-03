@@ -4,9 +4,10 @@ import 'package:get/get.dart';
 
 void main() => runApp(const GetMaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.black,
         // appBar: AppBar(
         //   title: const Placeholder(),
         // ),
-        body: WiPiHome(),
+        body: SafeArea(child: WiPiHome()),
       ),
     ));
