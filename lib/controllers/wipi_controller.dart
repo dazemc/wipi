@@ -32,21 +32,23 @@ class WiPiController extends GetxController {
     }
   }
 
-  void fetchCredentials(String connection) async {
-    final response = await getx.get("$showCredentials$connection");
+  void fetchCredentials(connection) async {
+    wifiInfo.value = connection;
+    getDeleteColor();
+    final response = await getx.get("$showCredentials${wifiInfo.value}");
     if (kDebugMode) {
       creds.value = response.body;
-      print(creds);
     }
   }
 
   void postCredentials() async {
-    print('Sending Credentials');
+    // print('Sending Credentials');
     final response =
         await getx.post(sendCredentials, {"SSID": ssid, "PASS": pass});
     if (kDebugMode) {
       if (response.body == "Connected") {
         connected = true;
+        fetchSavedConnections();
       }
     }
   }
@@ -59,7 +61,7 @@ class WiPiController extends GetxController {
     clearConnectionList();
     fetchSavedConnections();
     if (kDebugMode) {
-      print(response.body);
+      // print(response.body);
     }
   }
 

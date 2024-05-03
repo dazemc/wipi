@@ -15,8 +15,8 @@ class WiPiHome extends StatelessWidget {
         ),
         margin: const EdgeInsets.all(10),
         padding: const EdgeInsets.all(10),
-        width: 333,
-        height: 333,
+        // width: 333,
+        // height: 333,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -46,8 +46,7 @@ class WiPiHome extends StatelessWidget {
                               ),
                               selectedType,
                             ),
-                            onTap: () => wipiController.fetchCredentials(
-                                wipiController.wifiInfo.value));
+                            onTap: () => wipiController.fetchCredentials(selectedType));
                       }).toList(),
                     ),
                   ),
