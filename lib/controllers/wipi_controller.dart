@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:wipi/models/saved_connections.dart';
@@ -28,42 +27,35 @@ class WiPiController extends GetxController {
   void fetchSavedConnections() async {
     clearConnectionList();
     final response = await getx.get(showConnections);
-    if (kDebugMode) {
-      savedConnections.value =
-          response.body['saved_connections'].cast<String>();
-      wifiInfo.value = savedConnections[0];
-      fetchCredentials(wifiInfo.value);
-      getDeleteColor();
-    }
+    savedConnections.value = response.body['saved_connections'].cast<String>();
+    wifiInfo.value = savedConnections[0];
+    fetchCredentials(wifiInfo.value);
+    getDeleteColor();
   }
 
   void fetchCredentials(connection) async {
     wifiInfo.value = connection;
     getDeleteColor();
     final response = await getx.get("$showCredentials${wifiInfo.value}");
-    if (kDebugMode) {
-      creds = response.body;
-      for (String key in creds.keys) {
-        displayConnections = {
-          key: Connection(
-              ssid: creds[key]["ssid"],
-              keymgmt: creds[key]["key-mgmt"],
-              psk: creds[key]["psk"])
-        };
-      }
-      displayCredentials();
+    creds = response.body;
+    for (String key in creds.keys) {
+      displayConnections = {
+        key: Connection(
+            ssid: creds[key]["ssid"],
+            keymgmt: creds[key]["key-mgmt"],
+            psk: creds[key]["psk"])
+      };
     }
+    displayCredentials();
   }
 
   void postCredentials() async {
     // print('Sending Credentials');
     final response =
         await getx.post(sendCredentials, {"SSID": ssid, "PASS": pass});
-    if (kDebugMode) {
-      if (response.body == "Connected") {
-        connected = true;
-        fetchSavedConnections();
-      }
+    if (response.body == "Connected") {
+      connected = true;
+      fetchSavedConnections();
     }
   }
 
@@ -80,10 +72,8 @@ class WiPiController extends GetxController {
     final response = await getx.get("$deleteCredentials$connection");
     clearConnectionList();
     fetchSavedConnections();
-    if (kDebugMode) {
-      if (response.body == "Deleted: $connection") {
-        print("Successfully deleted");
-      }
+    if (response.body == "Deleted: $connection") {
+      // print("Successfully deleted");
     }
   }
 
