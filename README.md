@@ -4,6 +4,9 @@ Flutter app for sending wifi credentials to linux device running a local flask s
 <br>
 <br>
 <br>
-![wipi](./repo_assets/images/wipiscreenshot.png "Main screen") 
+<img src="./repo_assets/images/wipiscreenshot.png" width="200"/>
 <br>
-![wipi](./repo_assets/images/wipiaddscreenshot.png "Main screen") 
+<br>
+<br>
+<img src="./repo_assets/images/wipiaddscreenshot.png" width="200"/>
+
