@@ -145,55 +145,57 @@ class WiPiHome extends StatelessWidget {
               ),
             ),
             Obx(
-              () => Column(
-                children: [
-                  Card(
-                    color: Colors.black,
-                    child: Container(
-                      margin: const EdgeInsets.all(0),
-                      child: ListTile(
-                        shape: const RoundedRectangleBorder(),
-                        tileColor: Colors.grey[800],
-                        title: Text(
-                            style: const TextStyle(color: Colors.white),
-                            wipiController.displaySsid.value),
-                        leading: const Text(
-                            style: TextStyle(color: Colors.white), "ssid: "),
+              () => Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10),
+                child: Column(
+                  children: [
+                    Card(
+                      color: Colors.black,
+                      child: Container(
+                        margin: const EdgeInsets.all(0),
+                        child: ListTile(
+                          tileColor: Colors.grey[800],
+                          title: Text(
+                              style: const TextStyle(color: Colors.white),
+                              wipiController.displaySsid.value),
+                          leading: const Text(
+                              style: TextStyle(color: Colors.white), "ssid: "),
+                        ),
                       ),
                     ),
-                  ),
-                  Card(
-                    color: Colors.black,
-                    child: Container(
-                      margin: const EdgeInsets.all(0),
-                      child: ListTile(
-                        shape: const RoundedRectangleBorder(),
-                        tileColor: Colors.grey[800],
-                        title: Text(
-                            style: const TextStyle(color: Colors.white),
-                            wipiController.displayPass.value),
-                        leading: const Text(
-                            style: TextStyle(color: Colors.white), "psk: "),
+                    Card(
+                      color: Colors.black,
+                      child: Container(
+                        margin: const EdgeInsets.all(0),
+                        child: ListTile(
+                          shape: const RoundedRectangleBorder(),
+                          tileColor: Colors.grey[800],
+                          title: Text(
+                              style: const TextStyle(color: Colors.white),
+                              wipiController.displayPass.value),
+                          leading: const Text(
+                              style: TextStyle(color: Colors.white), "psk: "),
+                        ),
                       ),
                     ),
-                  ),
-                  Card(
-                    color: Colors.black,
-                    child: Container(
-                      margin: const EdgeInsets.all(0),
-                      child: ListTile(
-                        shape: const RoundedRectangleBorder(),
-                        tileColor: Colors.grey[800],
-                        title: Text(
-                            style: const TextStyle(color: Colors.white),
-                            wipiController.displayKeymgmt.value),
-                        leading: const Text(
-                            style: TextStyle(color: Colors.white),
-                            "key-mgmt: "),
+                    Card(
+                      color: Colors.black,
+                      child: Container(
+                        margin: const EdgeInsets.all(0),
+                        child: ListTile(
+                          shape: const RoundedRectangleBorder(),
+                          tileColor: Colors.grey[800],
+                          title: Text(
+                              style: const TextStyle(color: Colors.white),
+                              wipiController.displayKeymgmt.value),
+                          leading: const Text(
+                              style: TextStyle(color: Colors.white),
+                              "key-mgmt: "),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )
           ],

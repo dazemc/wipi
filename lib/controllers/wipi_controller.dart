@@ -46,7 +46,7 @@ class WiPiController extends GetxController {
       for (String key in creds.keys) {
         displayConnections = {
           key: Connection(
-              ssid: key,
+              ssid: creds[key]["ssid"],
               keymgmt: creds[key]["key-mgmt"],
               psk: creds[key]["psk"])
         };
