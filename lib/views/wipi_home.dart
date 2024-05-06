@@ -28,7 +28,10 @@ class WiPiHome extends StatelessWidget {
                     ),
                     child: DropdownButton(
                       hint: const Text(
-                        'Choose SSID',
+                        style: TextStyle(
+                          color: Colors.white,
+                        ),
+                        'Cannot find device',
                       ),
                       onChanged: (newValue) {
                         wipiController.wifiInfo(newValue);
@@ -117,6 +120,21 @@ class WiPiHome extends StatelessWidget {
                           leading: const Text(
                               style: TextStyle(color: Colors.white),
                               "key-mgmt: "),
+                        ),
+                      ),
+                    ),
+                    Card(
+                      color: Colors.black,
+                      child: Container(
+                        margin: const EdgeInsets.all(0),
+                        child: ListTile(
+                          shape: const RoundedRectangleBorder(),
+                          tileColor: Colors.grey[800],
+                          title: Text(
+                              style: const TextStyle(color: Colors.white),
+                              wipiController.displayIpAddr.value),
+                          leading: const Text(
+                              style: TextStyle(color: Colors.white), "local_ip: "),
                         ),
                       ),
                     ),

@@ -1,8 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:wipi/models/saved_connections.dart';
 
-const String baseUrl = 'http://192.168.0.174/';
+const String baseUrl = 'http://192.168.6.9/';
 const String showConnections = '${baseUrl}rec_creds?show_connections';
 const String showCredentials = '${baseUrl}rec_creds?show_credentials=';
 const String deleteCredentials = '${baseUrl}rec_creds?delete_credentials=';
@@ -22,6 +23,7 @@ class WiPiController extends GetxController {
   final displaySsid = "".obs;
   final displayPass = "".obs;
   final displayKeymgmt = "".obs;
+  final displayIpAddr = "".obs;
   bool connected = false;
 
   void fetchSavedConnections() async {
@@ -38,12 +40,17 @@ class WiPiController extends GetxController {
     getDeleteColor();
     final response = await getx.get("$showCredentials${wifiInfo.value}");
     creds = response.body;
+    if (kDebugMode) {
+      print(creds);
+    }
     for (String key in creds.keys) {
       displayConnections = {
         key: Connection(
-            ssid: creds[key]["ssid"],
-            keymgmt: creds[key]["key-mgmt"],
-            psk: creds[key]["psk"])
+          ssid: creds[key]["ssid"],
+          keymgmt: creds[key]["key-mgmt"],
+          psk: creds[key]["psk"],
+          localip: creds[key]["local-ip"],
+        ),
       };
     }
     displayCredentials();
@@ -51,18 +58,22 @@ class WiPiController extends GetxController {
 
   void postCredentials() async {
     // print('Sending Credentials');
+    await Future.delayed(const Duration(seconds: 10));
     final response =
         await getx.post(sendCredentials, {"SSID": ssid, "PASS": pass});
-    if (response.body == "Connected") {
-      connected = true;
-      fetchSavedConnections();
+    if (kDebugMode) {
+      print(response.body);
     }
+    // displayIpAddr.value = response.body["local_ip"];
+    // connected = true;
+    fetchSavedConnections();
   }
 
   void displayCredentials() {
     displaySsid.value = displayConnections[wifiInfo.value]!.ssid;
     displayKeymgmt.value = displayConnections[wifiInfo.value]!.keymgmt;
     displayPass.value = displayConnections[wifiInfo.value]!.psk;
+    displayIpAddr.value = displayConnections[wifiInfo.value]!.localip;
   }
 
   void removeCredentials(connection) async {

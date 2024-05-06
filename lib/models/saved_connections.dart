@@ -1,11 +1,13 @@
 class Connection {
-  final String ssid;
-  final String keymgmt;
-  final String psk;
+  late final String ssid;
+  late final String keymgmt;
+  late final String psk;
+  late final String localip;
 
-  const Connection({
+  Connection({
     required this.ssid,
     required this.keymgmt,
     required this.psk,
+    required this.localip,
   });
 }
