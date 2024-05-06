@@ -64,8 +64,6 @@ class WiPiController extends GetxController {
     if (kDebugMode) {
       print(response.body);
     }
-    // displayIpAddr.value = response.body["local_ip"];
-    // connected = true;
     fetchSavedConnections();
   }
 
