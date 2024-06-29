@@ -1,6 +1,6 @@
 # wipi
 
-Flutter app for sending wifi credentials to linux device running a local flask server. Originally made with a raspberry pi in mind, but should be compatible with any linux device using NetworkManger, iwd, python^3.10, and Flask. Server files can be found at this repo, <a href="https://www.github.com/dazemc/flask_networkmanager">flask_networkmanager</a> Wifi credentials are not saved but instead read directly from the configs at runtime, will require read/write permissions of /etc/NetworkManager/system-connections/ and /etc/NetworkManager/conf.d/
+Flutter app for sending wifi credentials to linux device running a local flask server. Originally made with a raspberry pi in mind, but should be compatible with any linux device using NetworkManger, python^3.10, and Flask. Server files can be found at this repo, <a href="https://www.github.com/dazemc/flask_networkmanager">flask_networkmanager</a> Wifi credentials are not saved but instead read directly from the configs at runtime, will require read/write permissions of /etc/NetworkManager/system-connections/ and /etc/NetworkManager/conf.d/
 <br>
 <br>
 Currently working on (ordered);<br> systemd service to check for nmcli connections and if none are connected enable AP mode and start flask_app,<br> command feedback,<br> ping from app,<br> sending scripts(python eval & bash) from app,<br> time-based OTP,<br> password encryption,<br> and ssh app.
